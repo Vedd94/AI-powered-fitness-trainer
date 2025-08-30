@@ -1,3 +1,4 @@
+import math
 import cv2
 import mediapipe as mp
 
@@ -34,17 +35,50 @@ class poseDetector():
         return img
     
     def getPosition(self, img, draw=True):
-        lmList = []
+        self.lmList = []
 
         if self.results and self.results.pose_landmarks:  
             for id, lm in enumerate(self.results.pose_landmarks.landmark):
                 h, w, c = img.shape
                 cx, cy = int(lm.x * w), int(lm.y * h)
-                lmList.append([id, cx, cy])
+                self.lmList.append([id, cx, cy])
                 if draw:
                     cv2.circle(img, (cx, cy), 5, (255, 0, 0), cv2.FILLED)
         
-        return lmList
+        return self.lmList
+    
+    def findAngle(self, img, p1, p2, p3, draw = True):
+        
+        _, x1, y1 = self.lmList[p1]
+        _, x2, y2 = self.lmList[p2]
+        _, x3, y3 = self.lmList[p3]
+
+        # Calculating angle
+        angle = math.atan2(y3-y2, x3-x2) - math.atan2(y1-y2, x1-x2)
+        angle = math.degrees(angle)
+
+        if angle < 0:
+            angle *= -1
+
+
+        if draw:
+
+            cv2.line(img, (x1,y1), (x2,y2), (0,255,0), 4)
+            cv2.line(img, (x2,y2), (x3,x3), (0,255,0), 4)
+
+            cv2.circle(img,(x1,y1), 10, (255,0,0), cv2.FILLED)
+            cv2.circle(img,(x1,y1), 15, (255,0,0), 2)
+
+            cv2.circle(img,(x2,y2), 10, (255,0,0), cv2.FILLED)
+            cv2.circle(img,(x2,y2), 15, (255,0,0), 2)
+
+            cv2.circle(img,(x3,y3), 10, (255,0,0), cv2
+            .FILLED)
+            cv2.circle(img,(x3,y3), 15, (255,0,0), 2)
+
+            cv2.putText(img, str(int(angle)),(x2-20, y2+50), cv2.FONT_HERSHEY_COMPLEX, 2, (255,0,0),2)
+
+        return angle
     
 
 import time
