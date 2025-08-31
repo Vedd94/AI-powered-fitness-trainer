@@ -3,10 +3,13 @@ import numpy as np
 import time
 import pose_estimator_module as pm
 
-def pushUps():
+def pushUps(para1):
 
-    cap = cv2.VideoCapture('AiTrainer/pushup1.mp4')
-    # print(cap.size)
+    # Handle webcam vs file
+    if para1 is None:
+        cap = cv2.VideoCapture(0)   # webcam
+    else:
+        cap = cv2.VideoCapture(para1) 
 
     detector = pm.poseDetector()
     count = 0
@@ -17,7 +20,7 @@ def pushUps():
         # img = cv2.imread('AiTrainer/test.png')
         img = detector.findPose(img, False)
         lmList = detector.getPosition(img, draw = False)
-        print(img.shape)
+        # print(img.shape)
         if len(lmList) != 0:
 
             angle1 = detector.findAngle(img, 12, 14, 16) # Right arm
@@ -41,17 +44,21 @@ def pushUps():
 
             cv2.rectangle(img, (0,250), (150,580), (0,255,0),cv2.FILLED)
             cv2.putText(img, str(int(count)), (50, 360), cv2.FONT_HERSHEY_PLAIN,5, (255,0,0),7)   
+
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
                 
 
         cv2.imshow("Image", img)
         cv2.waitKey(1)
 
 
-def squats():
+def squats(para1):
 
-    # cap = cv2.VideoCapture('skipping.mp4')
-    cap = cv2.VideoCapture('AiTrainer/squats3.mp4')
-    # print(cap.size)
+    if para1 is None:
+        cap = cv2.VideoCapture(0)   # webcam
+    else:
+        cap = cv2.VideoCapture(para1) 
 
     detector = pm.poseDetector()
     count = 0
@@ -92,11 +99,12 @@ def squats():
         cv2.waitKey(1)
 
 
-def bicepCurls():
+def bicepCurls(para1):
 
-    # cap = cv2.VideoCapture('skipping.mp4')
-    cap = cv2.VideoCapture(0)
-    # print(cap.size)
+    if para1 is None:
+        cap = cv2.VideoCapture(0)   # webcam
+    else:
+        cap = cv2.VideoCapture(para1) 
 
     detector = pm.poseDetector()
     count = 0
