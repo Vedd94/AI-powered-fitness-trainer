@@ -120,6 +120,3 @@ Open your browser at 👉 `http://localhost:8501`
 
 ⚡ If you like this project, don’t forget to **star ⭐ the repo**!
 
----
-
-👉 Do you want me to also **recreate your `requirements.txt`** with exact pinned versions (`opencv-python`, `mediapipe`, `numpy`, etc.) so setup won’t break for others when they clone?
