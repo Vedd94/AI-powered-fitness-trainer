@@ -21,12 +21,12 @@ class poseDetector():
             min_tracking_confidence=self.trackCon
         )
 
-        self.results = None   # 👈 initialize results
+        self.results = None 
 
     
     def findPose(self, img, draw=True):
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        self.results = self.pose.process(imgRGB)   # 👈 save results to self
+        self.results = self.pose.process(imgRGB) 
 
         if self.results.pose_landmarks:
             if draw:
@@ -83,7 +83,7 @@ class poseDetector():
 
 import time
 def main():
-    cap = cv2.VideoCapture('skipping.mp4')
+    cap = cv2.VideoCapture('AiTrainer/pushup1.mp4')
     pTime = 0
     detector = poseDetector()
 
